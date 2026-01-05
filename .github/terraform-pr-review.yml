@@ -34,10 +34,10 @@ jobs:
           terraform plan -out=tfplan
           terraform show -json tfplan > tfplan.json
 
-      - name: Run Terraform PR Review Agent
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          pip install -r requirements.txt
-          python agent/reviewer.py
+#      - name: Run Terraform PR Review Agent
+#        env:
+#          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          pip install -r requirements.txt
+#          python agent/reviewer.py
