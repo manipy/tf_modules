@@ -1,0 +1,70 @@
+# Resource Group Configuration
+resource_group_name = "rg-terraform-vm"
+location            = "eastus"
+
+# Virtual Network Configuration
+vnet_name           = "vnet-main"
+vnet_address_space  = ["10.0.0.0/16"]
+
+# Subnet Configuration
+subnet_name                = "subnet-main"
+subnet_address_prefixes    = ["10.0.1.0/24"]
+
+# Network Security Group Configuration
+nsg_name = "nsg-main"
+nsg_security_rules = [
+  {
+    name                       = "SSH"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    description                = "Allow SSH access"
+  },
+  {
+    name                       = "HTTP"
+    priority                   = 1002
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    description                = "Allow HTTP access"
+  }
+]
+
+# Deployment Mode
+deploy_vmss = false  # Set to true to deploy VMSS instead of single VM
+
+# Virtual Machine Configuration (used when deploy_vmss = false)
+vm_name                        = "vm-linux"
+vm_size                        = "Standard_B2s"
+admin_username                 = "azureuser"
+admin_password                 = null  # Set this if using password authentication
+disable_password_authentication = true
+public_key_path                = "~/.ssh/id_rsa.pub"  # Path to your SSH public key
+public_ip_enabled              = true
+
+# Virtual Machine Scale Set Configuration (used when deploy_vmss = true)
+vmss_name                      = "vmss-linux"
+vmss_vm_sku                    = "Standard_B2s"
+vmss_instances                 = 2
+vmss_enable_autoscaling        = true
+vmss_autoscale_min_instances   = 2
+vmss_autoscale_max_instances   = 10
+vmss_autoscale_default_instances = 2
+vmss_upgrade_mode              = "Automatic"
+
+# Tags
+tags = {
+  Environment = "Development"
+  Project     = "TerraformModules"
+  ManagedBy   = "Terraform"
+}
+
